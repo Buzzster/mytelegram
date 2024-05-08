@@ -39,22 +39,16 @@ public class TwilioSmsSender : ISmsSender
             phoneNumber = $"+{phoneNumber}";
         }
 
-        if (phoneNumber.StartsWith("888") || phoneNumber.StartsWith("+888"))
-        {
-            return;
-        }
-        else {
-            var resource = await MessageResource.CreateAsync(new PhoneNumber(phoneNumber),
-                from: new PhoneNumber(_optionsSnapshot.Value.FromNumber),
-                body: smsMessage.Text);
-            _logger.LogDebug("Send SMS result:{@Resource}", resource);
-            _logger.LogInformation("Send SMS completed,To={To},Status={Status} DateSent={DateSent} ErrorCode={ErrorCode} ErrorMessage={ErrorMessage} ",
-                resource.To,
-                resource.Status,
-                resource.DateSent,
-                resource.ErrorCode,
-                resource.ErrorMessage);
-        }
+        var resource = await MessageResource.CreateAsync(new PhoneNumber(phoneNumber),
+            from: new PhoneNumber(_optionsSnapshot.Value.FromNumber),
+            body: smsMessage.Text);
+        _logger.LogDebug("Send SMS result:{@Resource}", resource);
+        _logger.LogInformation("Send SMS completed,To={To},Status={Status} DateSent={DateSent} ErrorCode={ErrorCode} ErrorMessage={ErrorMessage} ",
+            resource.To,
+            resource.Status,
+            resource.DateSent,
+            resource.ErrorCode,
+            resource.ErrorMessage);
     }
 
     //private async Task InitTwilioClientIfNeedAsync()

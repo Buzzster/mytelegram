@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -30,24 +31,18 @@ namespace MyTelegram.SmsSender
                 phoneNumber = phoneNumber.Replace("+", "");
             }
             
-            if (!phoneNumber.StartsWith("888") || !phoneNumber.StartsWith("+888"))
+            var authKey = _optionsSnapshot.Value.AuthKey;
+            var content = new StringContent(JsonSerializer.Serialize(new
             {
-                return;
-            }
-            else {
-                var authKey = _optionsSnapshot.Value.AuthKey
-                var content = new StringContent(JsonSerializer.Serialize(new
-                {
-                    number = phoneNumber,
-                    message = smsMessage.Text
-                }), Encoding.UTF8, "application/json");
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authKey);
+                number = phoneNumber,
+                message = smsMessage.Text
+            }),Encoding.UTF8, "application/json");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authKey);
 
-                using var response = await _httpClient.PostAsync(_optionsSnapshot.Value.Uri+"/api/send", content);
-                var responseContent = await response.Content.ReadAsStringAsync();
+            using var response = await _httpClient.PostAsync(_optionsSnapshot.Value.Uri+"/api/send", content);
+            var responseContent = await response.Content.ReadAsStringAsync();
 
-                _logger.LogDebug("Send SMS result:{@Response}", responseContent);
-            }
+            _logger.LogDebug("Send SMS result:{@Response}", responseContent);
         }
     }
 }
