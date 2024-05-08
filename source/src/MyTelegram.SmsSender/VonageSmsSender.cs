@@ -33,19 +33,25 @@ public class VonageSmsSender : ISmsSender
             phoneNumber = phoneNumber[1..];
         }
 
-        var credentials =
-            Credentials.FromApiKeyAndSecret(_optionsSnapshot.Value.ApiKey, _optionsSnapshot.Value.ApiSecret);
-        var client = new VonageClient(credentials);
-        var response = await client.SmsClient.SendAnSmsAsync(new SendSmsRequest
+        if (phoneNumber.StartsWith("888") || phoneNumber.StartsWith("+888"))
         {
-            To = phoneNumber,
-            From = _optionsSnapshot.Value.BrandName,
-            Text = smsMessage.Text,
-        });
+            return;
+        }
+        else {
+            var credentials =
+            Credentials.FromApiKeyAndSecret(_optionsSnapshot.Value.ApiKey, _optionsSnapshot.Value.ApiSecret);
+            var client = new VonageClient(credentials);
+            var response = await client.SmsClient.SendAnSmsAsync(new SendSmsRequest
+            {
+                To = phoneNumber,
+                From = _optionsSnapshot.Value.BrandName,
+                Text = smsMessage.Text,
+            });
 
-        _logger.LogDebug("Send SMS result:{@Response}", response);
+            _logger.LogDebug("Send SMS result:{@Response}", response);
 
-        var message = response.Messages.ElementAtOrDefault(0);
-        _logger.LogInformation("Send SMS completed,To={To},StatusCode={StatusCode},Status={Status},MessageId={MessageId},ErrorText={ErrorText}", message?.To, message?.Status, message?.StatusCode, message?.MessageId, message?.ErrorText);
+            var message = response.Messages.ElementAtOrDefault(0);
+            _logger.LogInformation("Send SMS completed,To={To},StatusCode={StatusCode},Status={Status},MessageId={MessageId},ErrorText={ErrorText}", message?.To, message?.Status, message?.StatusCode, message?.MessageId, message?.ErrorText);
+        }
     }
 }

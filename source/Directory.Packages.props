@@ -46,6 +46,7 @@
     <PackageVersion Include="Volo.Abp.EventBus.RabbitMQ" Version="7.4.0-rc.4" />
     <PackageVersion Include="Volo.Abp.Sms" Version="7.4.0-rc.4" />
     <PackageVersion Include="Vonage" Version="7.2.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageVersion Include="xunit" Version="2.6.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.1" />
   </ItemGroup>

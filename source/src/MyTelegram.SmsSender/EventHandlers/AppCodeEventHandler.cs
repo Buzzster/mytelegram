@@ -21,7 +21,7 @@ public class AppCodeEventHandler(ISmsSenderFactory smsSenderFactory, ILogger<App
         try
         {
             var smsSender = smsSenderFactory.Create(eventData.PhoneNumber);
-            await smsSender.SendAsync(phoneNumber, $"MyTelegram code:{eventData.Code}");
+            await smsSender.SendAsync(phoneNumber, $"Your Buzzster login code is: {eventData.Code}");
         }
         catch (Exception ex)
         {

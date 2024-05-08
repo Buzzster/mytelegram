@@ -319,6 +319,9 @@ services:
       VonageSms__BrandName: ${VonageSmsBrandName}
       VonageSms__ApiKey: ${VonageSmsApiKey}
       VonageSms__ApiSecret: ${VonageSmsApiSecret}
+      PrivateSms__Enabled: ${PrivateSmsEnabled}
+      PrivateSms__Uri: ${PrivateSmsUri}
+      PrivateSms__AuthKey: ${PrivateSmsAuthKey}
 
     volumes:
       - ./data/mytelegram/sms-sender/logs:/data/Logs
